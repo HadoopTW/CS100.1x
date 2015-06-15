@@ -410,11 +410,15 @@ PS. 因為這段牽涉到很多 Hadoop MapReduce 觀念，所以我看得很快�
 2. 撰寫 Word Count 程式
 	- 計算 [Complete Works of William Shakespeare](http://www.gutenberg.org/ebooks/100) 裡出現次數最多的單字
 		1. 移除大小寫及符號
-			- re.sub escape string.punctuation strip() .lower() 	
+			- 使用**re.sub() escape str.punctuation** 與 **str.strip()**, **str.lower()**的先後順序會影響最後產生的總字數結果
 		2. split each line by its spaces
-			- text.split(" ")
+			- 注意**text.split(" ")**與**text.split()**的差異
 		3. takeOrdered() to obtain the fifteen most common words
-			- .takeOrdered(15, key = lambda x: -x[1])
+			- takeOrdered使用方式
+				- sort by keys (ascending): RDD.takeOrdered(num, key = lambda x: x[0]) 
+				- sort by keys (descending): RDD.takeOrdered(num, key = lambda x: -x[0]) 
+				- sort by values (ascending): RDD.takeOrdered(num, key = lambda x: x[1]) 
+				- sort by values (descending): RDD.takeOrdered(num, key = lambda x: -x[1]) 
 
 ## Week 3 - 資料管理(Data Management)
 
