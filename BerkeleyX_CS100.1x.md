@@ -408,6 +408,13 @@ PS. 因為這段牽涉到很多 Hadoop MapReduce 觀念，所以我看得很快�
 
 1. 走過一次 Spark Tutorial
 2. 撰寫 Word Count 程式
+	- 計算 [Complete Works of William Shakespeare](http://www.gutenberg.org/ebooks/100) 裡出現次數最多的單字
+		1. 移除大小寫及符號
+			- re.sub escape string.punctuation strip() .lower() 	
+		2. split each line by its spaces
+			- text.split(" ")
+		3. takeOrdered() to obtain the fifteen most common words
+			- .takeOrdered(15, key = lambda x: -x[1])
 
 ## Week 3 - 資料管理(Data Management)
 
