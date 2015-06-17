@@ -26,7 +26,7 @@
 1. 資料分析簡史：
 	- 1935 : R.A. Fisher 費雪 **"The Design of Experiments"** 
 		* 這就是經常會聽到的縮寫 **DOE**、**ANOVA (變異數分析，Analysis of variance)**跟費雪精確性檢定(Fisher's exact tests)的由來
-		* 費雪的名言：**"有關聯不代表就有因果關係(Correlation does not imply causation)"**，因為他是個老煙槍，但雖然研究顯示有關聯說抽煙會得癌症，但不代表就是因果關係.
+		* 費雪的名言：**"有關聯不代表就有因果關係(Correlation does not imply causation)"**，因為他是個老煙槍，雖然研究顯示有關聯說抽煙會得癌症，但不代表就是因果關係.
 	- 1939 : W.E. Demming "Quality Control"
 		* 使用數值取樣(statistical sampling)的方式進行品質管制
 	- 1953 : Peter Luhn
@@ -46,7 +46,7 @@
 		- 人們產生的資訊量與日俱增
 2. 案例：
 	- 1958 : Ancel Keys "Seven Countries Study"
-	- 探討死亡率與脂肪量的關聯呈現正相關
+	- 探討死亡率與脂肪攝取量的關聯呈現正相關
 	- 反思：
 		- 只有探討 21 個國家中的 7 個 (**資料的量不足**)
 		- 沒有考慮其他因素，例如不同國家每人平均(capita)的糖份攝取量 (**考量因子不足**)
@@ -147,7 +147,7 @@
 ### Lecture 3: 巨量資料、硬體趨勢與 Apache Spark
 
 1. 巨量資料問題(The Big Data Problem)
-	- 一顆 1TB 硬碟只要 35 塊美金，處理 1TB 的資料卻要 3 個小時(100MB/s
+	- 一顆 1TB 硬碟只要 35 塊美金，處理 1TB 的資料卻要 3 個小時(100MB/s)
 2. 巨量資料潮流下的硬體趨勢 (Hardware for Big Data)
 	- 改用一般等級的硬體，便宜、易於擴充，但容易故障，因此要用軟體的方式來解決
 3. 在本地端統計字數 (Counting Words Locally)
