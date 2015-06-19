@@ -427,7 +427,7 @@ PS. 因為這段牽涉到很多 Hadoop MapReduce 觀念，所以我看得很快�
 
 ### Lecture 5: 半結構化資料(Semi-Structured Data)
 
-1. ....
+1. 關鍵的資料管理概念
 	- 關鍵的資料管理概念
 		- 資料模型 (Data Model) - 用來描述資料的概念集合(collections of concepts)
 		- Schema - 使用某種資料模型，用以描述特定資料集合
@@ -580,5 +580,6 @@ PS. 因為這段牽涉到很多 Hadoop MapReduce 觀念，所以我看得很快�
     >>> sorted(x.fullOuterJoin(y).collect())
     Value: [('a',(1,2)),('b',(4,None)),('c',(None,8))]
 	```
+    
 ### Lab 2 - Web Server Log Analysis with Apache Spark
 
