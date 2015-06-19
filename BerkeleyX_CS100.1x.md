@@ -114,7 +114,7 @@ https://www.edx.org/course/introduction-big-data-apache-spark-uc-berkeleyx-cs100
     - Ben Fry 的模型 (資料視覺化專家)
     	1. Acquiring
         2. Parsing
-        3. Filtering
+        3. text.splittext.splitFiltering
         4. Mining the data for information
         5. Representing the results
         6. Refining the model
@@ -415,7 +415,7 @@ PS. 因為這段牽涉到很多 Hadoop MapReduce 觀念，所以我看得很快�
 		1. Remove punctuation and leading or trailing spaces
 			- 使用***re.sub() escape str.punctuation*** 與 ***str.strip()***, **str.lower()**的執行先後順序會影響最後產生的總字數結果
 		2. Split each line by spaces
-			- 注意***text.split(" ")***與***text.split()***的差異
+			- 注意 **text.split(" ")** 與 **text.split()** 的差異
 		3. Use ***takeOrdered()*** to obtain the fifteen most common words
 			- ***takeOrdered()***使用方式
 				- sort by keys (ascending): RDD.takeOrdered(num, key = lambda x: x[0]) 
@@ -583,3 +583,6 @@ PS. 因為這段牽涉到很多 Hadoop MapReduce 觀念，所以我看得很快�
     
 ### Lab 2 - Web Server Log Analysis with Apache Spark
 
+1. 資料集：http://ita.ee.lbl.gov/html/contrib/NASA-HTTP.html
+2. 若是函數忘了，可以查 [Spark Python API](https://spark.apache.org/docs/latest/api/python/pyspark.html)
+3. 注意前後有 cache 的 RDD 可以用 JOIN 得到新的 RDD, 拿來計算複雜的除法
