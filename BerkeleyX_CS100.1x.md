@@ -481,12 +481,16 @@ PS. 因為這段牽涉到很多 Hadoop MapReduce 觀念，所以我看得很快�
 		- Spark 1.3 版以後新增了 DataFrame 作為 RDD 的擴充元件
 		- 它代表「分散式」、有欄位名稱的表格，類似 Pandas Data，但是分散式的
 		- 資料型態由值決定
-		- 將 Spark DataFrame 轉成 Pandas DataFrame 的互相轉換方式
+		- 將 Spark DataFrame 轉成 Pandas DataFrame 的互相轉換方式					
+	
 	```
 	panda_df = spark_df.toPandas()
     spark_df = context.createDataFrame(panda_df)
     ```
-    - 需注意 Pandas DataFrame 必須可以放進 Driver 程式的記憶體中
+	- Reference guide 	
+		- [Spark SQL and DataFrame Guide](https://spark.apache.org/docs/latest/sql-programming-guide.html)
+		- [Introducing DataFrames in Spark for Large Scale Data Science](https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html)
+   	- 需注意 Pandas DataFrame 必須可以放進 Driver 程式的記憶體中
 	- 使用 PySpark DataFrame 在單機上比使用 RDD 還要快5倍
 9. 半結構化日誌檔
 	- 許多像是網頁伺服器、資料庫、作業系統的背景程式都會產生這種純文字格式的日誌檔
@@ -702,6 +706,6 @@ response_code = int(match.group(8))
 
 這個方法目的在於找出對於同一個key，distinct value共多少個
 
-- rdd_pairs.map(lambda (key, value): (key, len(set(value))))
+- rdd_pairs.map(lambda (key, value): (key, len(set(valu)))
 
 > 注意前後有 cache 的 RDD 可以用 rdd.join() or rdd.union() 得到新的 RDD, 拿來計算複雜的除法
