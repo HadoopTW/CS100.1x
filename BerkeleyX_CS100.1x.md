@@ -583,6 +583,125 @@ PS. 因為這段牽涉到很多 Hadoop MapReduce 觀念，所以我看得很快�
     
 ### Lab 2 - Web Server Log Analysis with Apache Spark
 
-1. 資料集：http://ita.ee.lbl.gov/html/contrib/NASA-HTTP.html
-2. 若是函數忘了，可以查 [Spark Python API](https://spark.apache.org/docs/latest/api/python/pyspark.html)
-3. 注意前後有 cache 的 RDD 可以用 JOIN 得到新的 RDD, 拿來計算複雜的除法
+
+#####資料集：[HTTP requests to the NASA Kennedy Space Center WWW server](http://ita.ee.lbl.gov/html/contrib/NASA-HTTP.html)
+
+***Apache HTTP Server Log Format***
+
+```
+127.0.0.1 - - [01/Aug/1995:00:00:01 -0400] "GET /images/launch-logo.gif HTTP/1.0" 200 1839
+```
+
+ - `127.0.0.1` : IP address of the client (remote host)
+ - `-` : Requested information of user identity from remote machine is not available.
+ - `-` : Requested information of user identity from local logon is not available. (如果存在的話，會是一個userID)
+ - `01/Aug/1995:00:00:01 -0400` : The time that the server finished processing the request.
+ 	- [day/month/year:hour:minute:second zone]
+	- day = 2*digit
+	- month = 3*letter
+	- year = 4*digit
+	- hour = 2*digit
+	- minute = 2*digit
+	- second = 2*digit
+	- zone = (\`+' | \`-') 4*digit
+ 
+ - `"GET /images/launch-logo.gif HTTP/1.0"` : The request line from the client is given in double quotes.
+ 	- [1] The request method from client.
+ 	- [2] The client requested resource.
+ 	- [3] Client used protocol.
+ - `200` : Status code that the server sends back to the client.
+ 	- 2xx : Successful
+ 	- 3xx : Redirection
+ 	- 4xx : Client Error
+ 		- 400 Bad Request
+ 		- 401 Unauthorized
+ 		- 402 Payment Required
+ 		- 403 Forbidden
+ 		- 404 Not Found
+ 		- 405 Method Not Allowed
+ 	- 5xx : Server Error
+ 		- 500 Internal Server Error
+ 		- 501 Not Implemented
+ 		- 502 Bad Gateway
+ 		- 503 Service Unavailable
+ 		- 504 Gateway Timeout
+ 		- 505 HTTP Version Not Supported	
+ - `1839` : The size of the object returned to the client. If no content it will be "-".
+ 
+#####Useful Python Package
+
+
+_**處理時間格式的工具`datetime`**_
+
+```
+import datetime
+
+month_map = {'Jan': 1, 'Feb': 2, 'Mar':3, 'Apr':4, 'May':5, 'Jun':6, 'Jul':7,
+    'Aug':8,  'Sep': 9, 'Oct':10, 'Nov': 11, 'Dec': 12}
+
+s = "01/Aug/1995:00:00:01 -0400"
+
+date_time = datetime.datetime(int(s[7:11]),
+	month_map[s[3:6]],
+	int(s[0:2]),
+	int(s[12:14]),
+	int(s[15:17]),
+	int(s[18:20]))
+
+## you can get value by using: date_time.day, date_time.hour, date_time.minute, date_time.tzinfo ...
+```
+
+_**處理正規表示法的工具`re`**_  [Patterns 查詢](https://docs.python.org/2/howto/regex.html)
+
+
+```
+import re
+
+logline = "127.0.0.1 - - [01/Aug/1995:00:00:01 -0400] "GET /images/launch-logo.gif HTTP/1.0" 200 1839"
+
+APACHE_ACCESS_LOG_PATTERN = '^(\S+) (\S+) (\S+) \[([\w:/]+\s[+\-]\d{4})\] "(\S+) (\S+)\s*(\S*)" (\d{3}) (\S+)'
+
+match = re.search(APACHE_ACCESS_LOG_PATTERN, logline)
+
+host			= match.group(1)
+client_identd = match.group(2)
+user_id       = match.group(3)
+method        = match.group(5)
+endpoint      = match.group(6)
+protocol      = match.group(7)
+response_code = int(match.group(8))
+
+```
+
+#####Useful PySpark API
+
+- 若是函數忘了，可以查 [Spark Python API](https://spark.apache.org/docs/latest/api/python/pyspark.html)
+- 或是查詢 [RDD class文件](https://spark.apache.org/docs/1.1.1/api/python/pyspark.rdd.RDD-class.html)
+
+***常用輔助函式***
+
+- count()、collect()、distinct()、cache()、take(num)
+
+***針對key值排序***
+
+- 使用 sortByKey
+	- sc.parallelize(tmp).sortByKey(True, 1).collect()
+- 使用 sortBy
+	- sc.parallelize(tmp).sortBy(lambda x: x[0]).collect()
+- 使用 takeOrdered
+	- sc.parallelize(tmp).takeOrdered(10, lambda s: -1 * s[0])
+		
+***針對value排序***
+
+- 使用 sortBy
+	- sc.parallelize(tmp).sortBy(lambda x: x[1]).collect()
+- 使用 takeOrdered
+	- sc.parallelize(tmp).takeOrdered(10, lambda s: -1 * s[1])
+
+***計算groupByKey()之後，value list的長度***
+
+這個方法目的在於找出對於同一個key，distinct value共多少個
+
+- rdd_pairs.map(lambda (key, value): (key, len(set(value))))
+
+> 注意前後有 cache 的 RDD 可以用 rdd.join() or rdd.union() 得到新的 RDD, 拿來計算複雜的除法
