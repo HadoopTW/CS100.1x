@@ -826,5 +826,80 @@ response_code = int(match.group(8))
 ### Lecture 8 : 探索資料分析與機器學習
 
 1. Exploratory Data Analysis (探索資料分析)
-	- 統計分成 descriptive 與 inferential 兩種
-2. 
+	- 統計分成「敘述統計(Descriptive Statistics)」 與 「推理統計(Inferential Statistics)」兩種
+	- 敘述統計
+		- 例如：中位數(Median)
+		- 用來描述資料，但無法進行更進一步的推論
+	- 敘述統計
+		- 例如：T 檢定(t-test)
+		- 可以基於資料進行更進一步的推論
+		- 可用來強化機器學習與預測的技術
+	- 商務問題範例：
+		- 簡單的敘述統計：哪些人是最高獲利的客戶？
+		- 假設檢定(Hypothesis Test)：這些客戶對公司的價值有什麼差異？
+		- 市場區隔/客戶分類(Segmentation/Classification))：這些客戶的共通特徵是什麼？
+		- 預測(Prediction)：這個新的客戶是否會成為可獲利的對象？若是，可獲利多少？
+	- 通常當我們在詢問商務問題時，是想知道因果關係(causal)。
+		- 例如：如果我看到這個廣告，會有什麼結果？
+	- 若詢問相關的問題(correlational question)，會比較容易回答
+		- 例如：過去當我看到這樣的廣告，發生了什麼事？
+	- 監督式學習(Supervised Learning)：分類(Classification)與回歸分析(Regression)
+	- 非監督式學習(Unsupervised Learning)：分群(Clustering)與降維(Dimension reduction)
+	- 註：通常非監督式學習會使用於一個大型的監督式學習問題中。例如：影像辨識類神經網路的自動編碼器(auto-encoder)
+
+	| Supervised Learning | Unsupervised Learning |
+    |---------------------|-----------------------|
+    | kNN (k Nearest Neighbors)	| Clustering |
+    | Naive Bayes | Factor Analysis |
+    | Logistic Regression | Latent Dirichlet Allocation |
+    | Support Vector Machines (SVM) | |
+    | Random Forests |  |
+
+2. 探索資料分析(Exploratory Data Analysis，簡稱 EDA)
+	- 探索資料分析(1977年的一本書)是基於 1960 年代貝爾實驗室發展出來的洞察(Insight)。
+	- 是用來視覺化與歸納資料的技術，例如：資料可以告訴我們什麼？
+	- 目前是「驗證資料分析(Confirmatory Data Analysis)」的對比
+	- 導入了許多基礎的技術，像是：五數概括法（Five-number summary）、箱形圖(box plot)、莖葉圖(Stem-and-Leaf Diagram)
+	- 其中，五數概括法（Five-number summary）即用下面的五個數來概括數據：
+		- 最小值
+		- 最大值
+		- 第1四分位數(Q1)；
+		- 中位數(Q2)；
+		- 第3四分位數(Q3)；
+	- 然而，五數概括法會有它的問題，在 1973 年「Anscombe's Quartet」的文章中指出四個不同的資料集(x,y)，其 x 與 y 數值的平均值跟樣本變異數(sample variance)，還有線性回歸都是一樣的。
+	- 結論：
+		- **在分析之前，最好先看一下資料的分佈圖**。
+		- 基本的統計往往無法紀錄現實世界的複雜度
+
+3. R 統計語言：
+	- R 統計語言是改良自貝爾實驗室為了探索資料分析而研發的 S 統計語言
+	- 其設計理念是允許用互動式的方式，進行資料的探索與視覺化
+	- R 語言包含了眾多統計模型，而 CRAN 套件庫則提供了許多開放原始碼的統計模型。
+	- 一些統計名詞的定義：
+		- 平均值(Mean)代表一堆數值的平均
+		- 變異數(Variance)用來量測這些數值分佈的寬度
+		- 標準差(Standard deviation)等於變異數的平方根
+		- 常態分佈(normal distribution)是由平均值與變異數決定
+	- 在機率理論中，中央極限定律(central limit theorem)指出當樣本數 n 趨近於無窮大時，這 n 個獨立樣本的集合(或平均值)分佈會呈現常態分佈。
+	- 一般 T 檢定與 ANOVA (變異數分析)會假設你的資料集呈現常態分佈，但這些檢定也受樣本數影響。當樣本數很大的時候，這些檢定一樣可以正常運作，即使資料集不是呈現常態分佈。
+
+4. 分佈(Distribution)
+	- 許多統計工具都會假設資料集是常態分佈，但現實往往不是如此。
+	- 因此，最好先畫資料的直方圖(histogram)
+	- 泊松分佈(Poisson distribution):適合於描述單位時間內隨機事件發生的次數的機率分佈。
+		- 在一本書中，特定詞出現的頻率
+		- 固定時間內，到訪特定網站的次數
+		- 一個小時內，網站的點擊次數
+	- 指數分佈(Exponential distribution)
+	- Zipf/Pareto/Yule distribution
+	- Binomial/Multinomial distribution
+	- **在套用數值模型前，請先瞭解資料集的分佈情形**
+
+5. Rhine Paradox
+	- Joseph Rhine 是 1950 年代的心理學家，他做了一個實驗，讓每個人猜猜 10 張紙牌是紅色或藍色。結果發現 1000 人有 1 人可以正確猜中 10 張紙牌的顏色。然而，當他重複請那些完全猜中的「異能者」再做一次實驗時，卻都失敗了。所以他做了結論說：「告訴異能者他們有超能力，會使他們的超能力喪失」。
+	- 這個結論錯誤之處在於紙牌的排列組合是二的10次方，共有 1024 種。找 1000 個人，有一個猜中的機率是 0.98。
+
+6. Spark MLlib
+	- 類似 Scikit-learn 的機器學習函式庫，可與 NumPy 搭配使用
+	- 提供分類(Classification)、回歸(Regression)與眾多不同的機器學習演算法
+	- Lab 3 會做協同過濾(Collaborative Filtering)，基於使用者過去對電影的評價，預測其他電影的評價。
